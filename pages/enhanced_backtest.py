@@ -141,18 +141,18 @@ def render():
             font=dict(family="JetBrains Mono, monospace", size=10),
             legend=dict(orientation="h", y=-0.14),
             margin=dict(l=60,r=20,t=20,b=55),
-            xaxis=dict(gridcolor="#ffffff08"),
-            yaxis=dict(gridcolor="#ffffff08"))
+            xaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
+            yaxis=dict(gridcolor="rgba(255,255,255,0.05)"))
 
     with tab1:
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=curve.index, y=curve["SPY"],
-            name="SPY B&H",  line=dict(color="#4488ff44", width=1.2)))
+            name="SPY B&H",  line=dict(color="rgba(68,136,255,0.27)", width=1.2)))
         fig.add_trace(go.Scatter(x=curve.index, y=curve["TQQQ"],
-            name="TQQQ B&H", line=dict(color="#ff664444", width=1.2)))
+            name="TQQQ B&H", line=dict(color="rgba(255,102,68,0.27)", width=1.2)))
         if base_curve is not None:
             fig.add_trace(go.Scatter(x=base_curve.index, y=base_curve["Strategy"],
-                name="Baseline", line=dict(color="#ffffff55", width=1.5, dash="dash")))
+                name="Baseline", line=dict(color="rgba(255,255,255,0.33)", width=1.5, dash="dash")))
         fig.add_trace(go.Scatter(x=curve.index, y=curve["Strategy"],
             name="Enhanced",   line=dict(color="#00ff88",  width=2.5)))
         base_layout(fig, h=400, log=True)
@@ -162,19 +162,19 @@ def render():
     with tab2:
         fig_dd = go.Figure()
         fig_dd.add_trace(go.Scatter(x=curve.index, y=curve["TQQQ_DD"],
-            name="TQQQ B&H", fill="tozeroy", fillcolor="#ff664412",
-            line=dict(color="#ff664488", width=1)))
+            name="TQQQ B&H", fill="tozeroy", fillcolor="rgba(255,102,68,0.07)",
+            line=dict(color="rgba(255,102,68,0.53)", width=1)))
         fig_dd.add_trace(go.Scatter(x=curve.index, y=curve["SPY_DD"],
-            name="SPY B&H",  fill="tozeroy", fillcolor="#4488ff12",
-            line=dict(color="#4488ff88", width=1)))
+            name="SPY B&H",  fill="tozeroy", fillcolor="rgba(68,136,255,0.07)",
+            line=dict(color="rgba(68,136,255,0.53)", width=1)))
         if base_curve is not None:
             fig_dd.add_trace(go.Scatter(x=base_curve.index, y=base_curve["Strat_DD"],
-                name="Baseline", fill="tozeroy", fillcolor="#ffffff08",
-                line=dict(color="#ffffff55", width=1.5, dash="dash")))
+                name="Baseline", fill="tozeroy", fillcolor="rgba(255,255,255,0.03)",
+                line=dict(color="rgba(255,255,255,0.33)", width=1.5, dash="dash")))
         fig_dd.add_trace(go.Scatter(x=curve.index, y=curve["Strat_DD"],
-            name="Enhanced", fill="tozeroy", fillcolor="#00ff8818",
+            name="Enhanced", fill="tozeroy", fillcolor="rgba(0,255,136,0.09)",
             line=dict(color="#00ff88", width=2)))
-        fig_dd.add_hline(y=-50, line_dash="dot", line_color="#ff000055",
+        fig_dd.add_hline(y=-50, line_dash="dot", line_color="rgba(255,0,0,0.33)",
                          annotation_text="-50%")
         base_layout(fig_dd, h=380, log=False)
         fig_dd.update_yaxes(title="Drawdown (%)", ticksuffix="%")
@@ -195,14 +195,14 @@ def render():
             if col in annual.columns:
                 v = annual[col]
                 fig_a.add_trace(go.Bar(name=col, x=annual.index.astype(str), y=v,
-                    marker_color=[color if x >= 0 else "#ff333377" for x in v], opacity=0.85))
+                    marker_color=[color if x >= 0 else "rgba(255,51,51,0.47)" for x in v], opacity=0.85))
         if show_base and base_result and "Strategy" in base_result["annual"].columns:
             ba = base_result["annual"]["Strategy"]
             fig_a.add_trace(go.Scatter(name="Baseline",
                 x=ba.index.astype(str), y=ba,
                 mode="markers+lines",
-                line=dict(color="#ffffff55", dash="dot"), marker=dict(size=6)))
-        fig_a.add_hline(y=0, line_color="#ffffff22")
+                line=dict(color="rgba(255,255,255,0.33)", dash="dot"), marker=dict(size=6)))
+        fig_a.add_hline(y=0, line_color="rgba(255,255,255,0.13)")
         base_layout(fig_a, h=380, log=False)
         fig_a.update_layout(barmode="group")
         fig_a.update_yaxes(title="Annual Return (%)", ticksuffix="%")
@@ -252,7 +252,7 @@ The top 2 remaining assets split the defensive bucket 60/40.
                 height=180, template="plotly_dark",
                 paper_bgcolor="#0f0f1c", plot_bgcolor="#0f0f1c",
                 yaxis=dict(visible=False),
-                xaxis=dict(gridcolor="#ffffff08"),
+                xaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
                 font=dict(family="JetBrains Mono, monospace", size=9),
                 margin=dict(l=10,r=10,t=30,b=30),
                 title="Defense asset held each month (color = asset)")

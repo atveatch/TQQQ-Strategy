@@ -136,10 +136,10 @@ def render():
                 name="Current", line=dict(color="#00ff88", width=2.5)))
             fig_eq.add_trace(go.Scatter(
                 x=curve.index, y=curve["SPY"],
-                name="SPY", line=dict(color="#4488ff55", width=1.2)))
+                name="SPY", line=dict(color="rgba(68,136,255,0.33)", width=1.2)))
             fig_eq.add_trace(go.Scatter(
                 x=curve.index, y=curve["TQQQ"],
-                name="TQQQ B&H", line=dict(color="#ff664455", width=1.2)))
+                name="TQQQ B&H", line=dict(color="rgba(255,102,68,0.33)", width=1.2)))
             for saved in st.session_state.saved_blends:
                 sc = saved["result"]["curve_df"]
                 fig_eq.add_trace(go.Scatter(
@@ -153,8 +153,8 @@ def render():
                 font=dict(family="JetBrains Mono, monospace", size=10),
                 legend=dict(orientation="h", y=-0.15, font_size=9),
                 margin=dict(l=60,r=20,t=20,b=50),
-                xaxis=dict(gridcolor="#ffffff08"),
-                yaxis=dict(gridcolor="#ffffff08"))
+                xaxis=dict(gridcolor="rgba(255,255,255,0.03)"),
+                yaxis=dict(gridcolor="rgba(255,255,255,0.03)"))
             st.plotly_chart(fig_eq, use_container_width=True)
 
     # ── Comparison table ──────────────────────────────────────────────────

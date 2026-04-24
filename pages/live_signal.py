@@ -166,11 +166,11 @@ def render():
     fig_band = go.Figure()
     fig_band.add_trace(go.Scatter(
         x=recent.index, y=recent["SPY_UPPER"],
-        name="+3% Band", line=dict(color="#00ff8844", width=1, dash="dot"),
+        name="+3% Band", line=dict(color="rgba(0,255,136,0.27)", width=1, dash="dot"),
         fill=None))
     fig_band.add_trace(go.Scatter(
         x=recent.index, y=recent["SPY_LOWER"],
-        name="−3% Band", line=dict(color="#ff335544", width=1, dash="dot"),
+        name="−3% Band", line=dict(color="rgba(255,51,85,0.27)", width=1, dash="dot"),
         fill="tonexty", fillcolor="rgba(255,255,255,0.02)"))
     fig_band.add_trace(go.Scatter(
         x=recent.index, y=recent["SPY_SMA200"],
@@ -181,10 +181,10 @@ def render():
     fig_band.update_layout(
         height=280, template="plotly_dark",
         paper_bgcolor="#0f0f1c", plot_bgcolor="#0f0f1c",
-        font=dict(family="JetBrains Mono, monospace", size=10, color="#ffffff88"),
+        font=dict(family="JetBrains Mono, monospace", size=10, color="rgba(255,255,255,0.53)"),
         legend=dict(orientation="h", y=-0.15, font_size=10),
         margin=dict(l=50, r=20, t=10, b=40),
-        xaxis=dict(gridcolor="#ffffff08"), yaxis=dict(gridcolor="#ffffff08"))
+        xaxis=dict(gridcolor="rgba(255,255,255,0.03)"), yaxis=dict(gridcolor="rgba(255,255,255,0.03)"))
     st.plotly_chart(fig_band, use_container_width=True)
 
     # ── HYG & TQQQ ALLOCATION ────────────────────────────────────────────────
@@ -205,7 +205,7 @@ def render():
             font=dict(family="JetBrains Mono, monospace", size=9),
             legend=dict(orientation="h", y=-0.2, font_size=9),
             margin=dict(l=45, r=10, t=10, b=35),
-            xaxis=dict(gridcolor="#ffffff06"), yaxis=dict(gridcolor="#ffffff06"))
+            xaxis=dict(gridcolor="rgba(255,255,255,0.02)"), yaxis=dict(gridcolor="rgba(255,255,255,0.02)"))
         st.plotly_chart(fig_hyg, use_container_width=True)
 
     with col_alloc_chart:
@@ -219,8 +219,8 @@ def render():
         fig_alloc.update_layout(height=220, template="plotly_dark",
             paper_bgcolor="#0f0f1c", plot_bgcolor="#0f0f1c",
             font=dict(family="JetBrains Mono, monospace", size=9),
-            yaxis=dict(range=[0, 105], ticksuffix="%", gridcolor="#ffffff06"),
-            xaxis=dict(gridcolor="#ffffff06"),
+            yaxis=dict(range=[0, 105], ticksuffix="%", gridcolor="rgba(255,255,255,0.02)"),
+            xaxis=dict(gridcolor="rgba(255,255,255,0.02)"),
             margin=dict(l=45, r=10, t=10, b=35), showlegend=False)
         st.plotly_chart(fig_alloc, use_container_width=True)
 

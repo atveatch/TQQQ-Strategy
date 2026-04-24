@@ -117,7 +117,7 @@ def render():
                     name=lbl, line=dict(color=col, width=2)))
         else:
             fig = go.Figure()
-            colors = {"SPY": "#4488ff55", "TQQQ": "#ff664455",
+            colors = {"SPY": "rgba(68,136,255,0.33)", "TQQQ": "rgba(255,102,68,0.33)",
                       "Strategy": cfg["color"]}
             widths = {"SPY": 1.2, "TQQQ": 1.2, "Strategy": 2.5}
             for col_name in ["SPY", "TQQQ", "Strategy"]:
@@ -133,7 +133,7 @@ def render():
             font=dict(family="JetBrains Mono, monospace", size=10),
             legend=dict(orientation="h", y=-0.12),
             margin=dict(l=60, r=20, t=20, b=50),
-            xaxis=dict(gridcolor="#ffffff08"), yaxis=dict(gridcolor="#ffffff08"))
+            xaxis=dict(gridcolor="rgba(255,255,255,0.03)"), yaxis=dict(gridcolor="rgba(255,255,255,0.03)"))
         st.plotly_chart(fig, use_container_width=True)
 
     with tab2:
@@ -149,7 +149,7 @@ def render():
                 name=lbl, fill="tozeroy",
                 fillcolor=color.replace("#", "rgba(").rstrip(")") + ",0.08)",
                 line=dict(color=color, width=width)))
-        fig_dd.add_hline(y=-50, line_dash="dot", line_color="#ff000055",
+        fig_dd.add_hline(y=-50, line_dash="dot", line_color="rgba(255,0,0,0.33)",
                          annotation_text="-50% threshold")
         fig_dd.update_layout(
             height=380, template="plotly_dark",
@@ -158,8 +158,8 @@ def render():
             font=dict(family="JetBrains Mono, monospace", size=10),
             legend=dict(orientation="h", y=-0.12),
             margin=dict(l=60, r=20, t=20, b=50),
-            xaxis=dict(gridcolor="#ffffff08"),
-            yaxis=dict(gridcolor="#ffffff08", ticksuffix="%"))
+            xaxis=dict(gridcolor="rgba(255,255,255,0.03)"),
+            yaxis=dict(gridcolor="rgba(255,255,255,0.03)", ticksuffix="%"))
         st.plotly_chart(fig_dd, use_container_width=True)
 
         # Worst drawdown periods
@@ -180,9 +180,9 @@ def render():
                 vals = annual[col_name]
                 fig_ann.add_trace(go.Bar(
                     name=col_name, x=annual.index.astype(str), y=vals,
-                    marker_color=[color if v >= 0 else "#ff333388" for v in vals],
+                    marker_color=[color if v >= 0 else "rgba(255,51,51,0.53)" for v in vals],
                     opacity=0.85))
-        fig_ann.add_hline(y=0, line_color="#ffffff33")
+        fig_ann.add_hline(y=0, line_color="rgba(255,255,255,0.20)")
         fig_ann.update_layout(
             height=380, barmode="group", template="plotly_dark",
             paper_bgcolor="#0f0f1c", plot_bgcolor="#0f0f1c",
@@ -190,7 +190,7 @@ def render():
             font=dict(family="JetBrains Mono, monospace", size=10),
             legend=dict(orientation="h", y=-0.12),
             margin=dict(l=60, r=20, t=20, b=50),
-            xaxis=dict(gridcolor="#ffffff08"), yaxis=dict(gridcolor="#ffffff08"))
+            xaxis=dict(gridcolor="rgba(255,255,255,0.03)"), yaxis=dict(gridcolor="rgba(255,255,255,0.03)"))
         st.plotly_chart(fig_ann, use_container_width=True)
 
         # Monthly heatmap for strategy
@@ -229,8 +229,8 @@ def render():
         fig_alloc.update_layout(
             height=300, template="plotly_dark",
             paper_bgcolor="#0f0f1c", plot_bgcolor="#0f0f1c",
-            yaxis=dict(range=[0,105], ticksuffix="%", gridcolor="#ffffff08"),
-            xaxis=dict(gridcolor="#ffffff08"),
+            yaxis=dict(range=[0,105], ticksuffix="%", gridcolor="rgba(255,255,255,0.03)"),
+            xaxis=dict(gridcolor="rgba(255,255,255,0.03)"),
             font=dict(family="JetBrains Mono, monospace", size=10),
             margin=dict(l=60, r=20, t=20, b=40), showlegend=False)
         st.plotly_chart(fig_alloc, use_container_width=True)
