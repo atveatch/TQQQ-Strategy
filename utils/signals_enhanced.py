@@ -298,8 +298,8 @@ def run_enhanced_backtest(
     required = ["SPY_SMA200", "TQQQ_ALLOC", "TQQQ", "SPY", "TLT", "GLD"]
     df = df.dropna(subset=[c for c in required if c in df.columns])
 
-    if len(df) == 0:
-        raise ValueError("No data after filtering — check date range and required columns.")
+    if len(df) < 50:
+        raise ValueError(f"Not enough data after filtering ({len(df)} rows). Try setting Start Year to 2013 or later — BTAL, GOVZ and EDV have limited history.")
 
     # ── Asset returns ────────────────────────────────────────────────────────
     def ret(col, boost=0.0):

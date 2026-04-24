@@ -59,6 +59,10 @@ def run_backtest(
 
     df = df.dropna(subset=["SPY_SMA200", "TQQQ_ALLOC", "TQQQ", "SPY", "TLT", "GLD"])
 
+    # Guard against empty dataframe after filtering
+    if len(df) < 50:
+        raise ValueError(f"Not enough data after filtering ({len(df)} rows). Try a later start date — some tickers like BTAL and GOVZ only have data from 2012+.")
+
     # Daily returns for each asset
     tqqq_ret  = df["TQQQ"].pct_change().fillna(0) + cfg["tqqq_boost"]
     spy_ret   = df["SPY"].pct_change().fillna(0)
@@ -111,7 +115,9 @@ def run_backtest(
     n_years = len(df) / 252
 
     def cagr(curve):
-        if curve.iloc[-1] <= 0 or n_years <= 0:
+        if len(curve) == 0 or n_years <= 0:
+            return 0.0
+        if curve.iloc[-1] <= 0:
             return 0.0
         return (curve.iloc[-1] / 100) ** (1 / n_years) - 1
 
