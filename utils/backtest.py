@@ -64,13 +64,20 @@ def run_backtest(
     if len(df) < 50:
         raise ValueError(f"Not enough data ({len(df)} rows). Try a later start date — signals need 200 days of warmup data before they are valid.")
 
+    # Reset first row returns to 0 to avoid pct_change artifact from date filtering
+    # (pct_change on row 0 after slicing compares to the prior row which is excluded)
+    def safe_ret(series, boost=0.0):
+        r = series.pct_change().fillna(0) + boost
+        r.iloc[0] = 0.0  # zero out first row artifact
+        return r
+
     # Daily returns for each asset
-    tqqq_ret  = df["TQQQ"].pct_change().fillna(0) + cfg["tqqq_boost"]
-    spy_ret   = df["SPY"].pct_change().fillna(0)
-    tlt_ret   = df["TLT"].pct_change().fillna(0) + cfg["tlt_boost"]
-    gld_ret   = df["GLD"].pct_change().fillna(0)
-    sqqq_ret  = df["SQQQ"].pct_change().fillna(0) if "SQQQ" in df.columns else -tqqq_ret
-    btal_ret  = df["BTAL"].pct_change().fillna(0) if "BTAL" in df.columns else pd.Series(0.0, index=df.index)
+    tqqq_ret  = safe_ret(df["TQQQ"], cfg["tqqq_boost"])
+    spy_ret   = safe_ret(df["SPY"])
+    tlt_ret   = safe_ret(df["TLT"],  cfg["tlt_boost"])
+    gld_ret   = safe_ret(df["GLD"])
+    sqqq_ret  = safe_ret(df["SQQQ"]) if "SQQQ" in df.columns else -tqqq_ret
+    btal_ret  = safe_ret(df["BTAL"]) if "BTAL" in df.columns else pd.Series(0.0, index=df.index)
 
     # Cash / T-bill rate
     if cfg["cash_rate"] is not None:

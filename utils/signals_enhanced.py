@@ -304,7 +304,9 @@ def run_enhanced_backtest(
     # ── Asset returns ────────────────────────────────────────────────────────
     def ret(col, boost=0.0):
         if col in df.columns:
-            return df[col].pct_change().fillna(0) + boost
+            r = df[col].pct_change().fillna(0) + boost
+            r.iloc[0] = 0.0  # zero out first-row artifact from date slicing
+            return r
         return pd.Series(0.0, index=df.index)
 
     asset_rets = {
