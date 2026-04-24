@@ -291,15 +291,21 @@ def run_enhanced_backtest(
 
     cfg = REGIME_PRESETS[regime]
     df  = signals_df.copy()
+
+    # Fill TQQQ_ALLOC NaNs before SMA warmup period
+    if "TQQQ_ALLOC" in df.columns:
+        df["TQQQ_ALLOC"] = df["TQQQ_ALLOC"].fillna(0.5)
+    else:
+        df["TQQQ_ALLOC"] = 0.5
+
+    # Drop only rows missing core price data
+    df = df.dropna(subset=["TQQQ", "SPY", "TLT", "GLD"])
+
     if start_date: df = df[df.index >= start_date]
     if end_date:   df = df[df.index <= end_date]
 
-    # Drop rows missing critical columns
-    required = ["SPY_SMA200", "TQQQ_ALLOC", "TQQQ", "SPY", "TLT", "GLD"]
-    df = df.dropna(subset=[c for c in required if c in df.columns])
-
     if len(df) < 50:
-        raise ValueError(f"Not enough data after filtering ({len(df)} rows). Try setting Start Year to 2013 or later — BTAL, GOVZ and EDV have limited history.")
+        raise ValueError(f"Not enough data ({len(df)} rows). Try a later start date.")
 
     # ── Asset returns ────────────────────────────────────────────────────────
     def ret(col, boost=0.0):

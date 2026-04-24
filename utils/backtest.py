@@ -52,16 +52,23 @@ def run_backtest(
     w   = {k: v / 100.0 for k, v in blend.items()}
 
     df = signals_df.copy()
+
+    # Fill TQQQ_ALLOC NaNs (first 200 days before SMA warmup) with neutral 0.5
+    if "TQQQ_ALLOC" in df.columns:
+        df["TQQQ_ALLOC"] = df["TQQQ_ALLOC"].fillna(0.5)
+    else:
+        df["TQQQ_ALLOC"] = 0.5
+
+    # Drop only rows missing core price data
+    df = df.dropna(subset=["TQQQ", "SPY", "TLT", "GLD"])
+
     if start_date:
         df = df[df.index >= start_date]
     if end_date:
         df = df[df.index <= end_date]
 
-    df = df.dropna(subset=["SPY_SMA200", "TQQQ_ALLOC", "TQQQ", "SPY", "TLT", "GLD"])
-
-    # Guard against empty dataframe after filtering
     if len(df) < 50:
-        raise ValueError(f"Not enough data after filtering ({len(df)} rows). Try a later start date — some tickers like BTAL and GOVZ only have data from 2012+.")
+        raise ValueError(f"Not enough data ({len(df)} rows). Try a later start date.")
 
     # Daily returns for each asset
     tqqq_ret  = df["TQQQ"].pct_change().fillna(0) + cfg["tqqq_boost"]
