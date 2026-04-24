@@ -42,7 +42,7 @@ def render():
         st.markdown("### Rate Regime")
         regime = st.radio("", list(REGIME_PRESETS.keys()),
                           format_func=lambda k: REGIME_PRESETS[k]["label"], index=0)
-        start_yr = st.slider("Start Year", 2011, 2022, 2011)
+        start_yr = st.slider("Start Year", 2013, 2022, 2013)
 
     start_dt = f"{start_yr}-01-01"
 

@@ -41,7 +41,7 @@ def render():
         total  = b_btal + b_tlt + b_gold + b_sqqq + b_cash
         color  = "green" if total == 100 else "red"
         st.markdown(f"**Total: :{color}[{total}%]**")
-        start_yr = st.slider("Start Year", 2010, 2022, 2010)
+        start_yr = st.slider("Start Year", 2013, 2022, 2013)
         overlay  = st.checkbox("Overlay all 3 regimes", False)
 
     blend = {"btal": b_btal, "tlt": b_tlt, "gold": b_gold,
