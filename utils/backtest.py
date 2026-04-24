@@ -53,14 +53,8 @@ def run_backtest(
 
     df = signals_df.copy()
 
-    # Fill TQQQ_ALLOC NaNs (first 200 days before SMA warmup) with neutral 0.5
-    if "TQQQ_ALLOC" in df.columns:
-        df["TQQQ_ALLOC"] = df["TQQQ_ALLOC"].fillna(0.5)
-    else:
-        df["TQQQ_ALLOC"] = 0.5
-
-    # Drop only rows missing core price data
-    df = df.dropna(subset=["TQQQ", "SPY", "TLT", "GLD"])
+    # Only use rows AFTER SMA200 warmup is complete and all signals are valid
+    df = df.dropna(subset=["SPY_SMA200", "TQQQ_ALLOC", "TQQQ", "SPY", "TLT", "GLD"])
 
     if start_date:
         df = df[df.index >= start_date]
@@ -68,7 +62,7 @@ def run_backtest(
         df = df[df.index <= end_date]
 
     if len(df) < 50:
-        raise ValueError(f"Not enough data ({len(df)} rows). Try a later start date.")
+        raise ValueError(f"Not enough data ({len(df)} rows). Try a later start date — signals need 200 days of warmup data before they are valid.")
 
     # Daily returns for each asset
     tqqq_ret  = df["TQQQ"].pct_change().fillna(0) + cfg["tqqq_boost"]

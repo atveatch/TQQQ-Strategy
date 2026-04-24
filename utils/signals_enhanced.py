@@ -292,14 +292,8 @@ def run_enhanced_backtest(
     cfg = REGIME_PRESETS[regime]
     df  = signals_df.copy()
 
-    # Fill TQQQ_ALLOC NaNs before SMA warmup period
-    if "TQQQ_ALLOC" in df.columns:
-        df["TQQQ_ALLOC"] = df["TQQQ_ALLOC"].fillna(0.5)
-    else:
-        df["TQQQ_ALLOC"] = 0.5
-
-    # Drop only rows missing core price data
-    df = df.dropna(subset=["TQQQ", "SPY", "TLT", "GLD"])
+    # Only use rows AFTER SMA200 warmup is complete and all signals are valid
+    df = df.dropna(subset=["SPY_SMA200", "TQQQ_ALLOC", "TQQQ", "SPY", "TLT", "GLD"])
 
     if start_date: df = df[df.index >= start_date]
     if end_date:   df = df[df.index <= end_date]
